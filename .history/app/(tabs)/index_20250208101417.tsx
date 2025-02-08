@@ -69,19 +69,20 @@ function getRandomElement(arr) {
 const newData = [];
 
 for (let i = 0; i < 10; i++) {
+  // Mỗi trường được lấy ngẫu nhiên từ DATA
   const randomName = getRandomElement(DATA).name;
   const randomEmail = getRandomElement(DATA).email;
   const randomPosition = getRandomElement(DATA).poisition;
   const randomPhoto = getRandomElement(DATA).photo;
 
+  // Tạo object mới và thêm vào mảng newData
   newData.push({
     name: randomName,
-    email: randomEmail + i,
+    email: randomEmail,
     poisition: randomPosition,
     photo: randomPhoto
   });
 }
-
 export default function HomeScreen() {
   return (
     <SafeAreaView style={{ marginTop: Platform.OS === 'android' ? 50 : 0 }}>

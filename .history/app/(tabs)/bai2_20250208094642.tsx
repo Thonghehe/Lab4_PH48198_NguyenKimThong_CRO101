@@ -14,9 +14,9 @@ export default function Bai2() {
     const [backgroundColor, setBackgroundColor] = useState('blue');
     const onRefresh = () => {
         setRefreshing(true);
-        setBarStyle((prevStyle) => prevStyle === 'light-content' ? 'dark-content' : 'light-content');
         setTimeout(() => {
             setRefreshing(false);
+            setBackgroundColor(backgroundColor === 'blue' ? 'green' : 'blue');
         }, 1000);
     };
     return (

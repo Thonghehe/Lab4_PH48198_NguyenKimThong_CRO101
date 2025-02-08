@@ -14,9 +14,9 @@ export default function Bai2() {
     const [backgroundColor, setBackgroundColor] = useState('blue');
     const onRefresh = () => {
         setRefreshing(true);
-        setBarStyle((prevStyle) => prevStyle === 'light-content' ? 'dark-content' : 'light-content');
         setTimeout(() => {
             setRefreshing(false);
+            setBackgroundColor(backgroundColor === 'blue' ? 'green' : 'blue');
         }, 1000);
     };
     return (
@@ -27,6 +27,7 @@ export default function Bai2() {
                 }>
                 <StatusBar
                     barStyle={barStyle}
+
                     translucent
                     backgroundColor={'transparent'} />
                 <Text style={styles.text}>Kéo xuống để đổi màu</Text>
