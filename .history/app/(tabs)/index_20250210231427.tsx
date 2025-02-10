@@ -149,7 +149,7 @@ export default function HomeScreen() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Sửa thông tin</Text>
+            <Text style={styles.modalText}>Edit Contact</Text>
             <TextInput
               style={styles.input}
               placeholder="Edit Name"
@@ -170,10 +170,10 @@ export default function HomeScreen() {
             />
             <View style={styles.buttonRow}>
               <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
-                <Text style={styles.buttonText}>Lưu</Text>
+                <Text style={styles.buttonText}>Save</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                <Text style={styles.buttonText}>Huỷ</Text>
+                <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -223,46 +223,36 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   listItem: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: 'white',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   avatar: {
     width: 64,
     height: 64,
-    borderRadius: 32,
-    marginRight: 20,
+    margin: 20,
   },
   baseText: {
     fontFamily: 'Cochin',
-    color: '#333',
+    color: 'black',
     fontSize: 16,
-    marginBottom: 4,
+    marginTop: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     marginLeft: 'auto',
   },
   editButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: 'blue',
     padding: 10,
     borderRadius: 5,
     marginRight: 10,
   },
   deleteButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
   },

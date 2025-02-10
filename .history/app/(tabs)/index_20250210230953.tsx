@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, SafeAreaView, FlatList, View, Text, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
+import { Image, StyleSheet, Platform, SafeAreaView, FlatList, View, Text, TouchableOpacity, Alert, TextInput } from 'react-native';
 import React, { useState } from 'react';
 
 type Contactype = {
@@ -91,39 +91,45 @@ export default function HomeScreen() {
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
   const [editPosition, setEditPosition] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(null);
 
   const handleEdit = (index) => {
     const contact = contacts[index];
     setEditName(contact.name);
     setEditEmail(contact.email);
     setEditPosition(contact.poisition);
-    setCurrentIndex(index);
-    setModalVisible(true);
-  };
 
-  const handleSave = () => {
-    const newContacts = [...contacts];
-    newContacts[currentIndex] = { ...newContacts[currentIndex], name: editName, email: editEmail, poisition: editPosition };
-    setContacts(newContacts);
-    setModalVisible(false);
-    setEditName('');
-    setEditEmail('');
-    setEditPosition('');
+    Alert.alert(
+      'Edit Contact',
+      null,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Save',
+          onPress: () => {
+            const newContacts = [...contacts];
+            newContacts[index] = { ...contact, name: editName, email: editEmail, poisition: editPosition };
+            setContacts(newContacts);
+          },
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {
+          setEditName('');
+          setEditEmail('');
+          setEditPosition('');
+        },
+      }
+    );
   };
 
   const handleDelete = (index) => {
-    setCurrentIndex(index);
-    setDeleteModalVisible(true);
-  };
-
-  const confirmDelete = () => {
     const newContacts = [...contacts];
-    newContacts.splice(currentIndex, 1);
+    newContacts.splice(index, 1);
     setContacts(newContacts);
-    setDeleteModalVisible(false);
   };
 
   return (
@@ -139,68 +145,26 @@ export default function HomeScreen() {
         )}
         keyExtractor={item => item.email}
       />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Sửa thông tin</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Edit Name"
-              value={editName}
-              onChangeText={setEditName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Edit Email"
-              value={editEmail}
-              onChangeText={setEditEmail}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Edit Position"
-              value={editPosition}
-              onChangeText={setEditPosition}
-            />
-            <View style={styles.buttonRow}>
-              <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
-                <Text style={styles.buttonText}>Lưu</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setModalVisible(false)}>
-                <Text style={styles.buttonText}>Huỷ</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={deleteModalVisible}
-        onRequestClose={() => {
-          setDeleteModalVisible(!deleteModalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Bạn có muốn xoá không ?</Text>
-            <View style={styles.buttonRow}>
-              <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={confirmDelete}>
-                <Text style={styles.buttonText}>Có</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => setDeleteModalVisible(false)}>
-                <Text style={styles.buttonText}>Không</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Edit Name"
+          value={editName}
+          onChangeText={setEditName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Edit Email"
+          value={editEmail}
+          onChangeText={setEditEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Edit Position"
+          value={editPosition}
+          onChangeText={setEditPosition}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -223,46 +187,36 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   listItem: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: 'white',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   avatar: {
     width: 64,
     height: 64,
-    borderRadius: 32,
-    marginRight: 20,
+    margin: 20,
   },
   baseText: {
     fontFamily: 'Cochin',
-    color: '#333',
+    color: 'black',
     fontSize: 16,
-    marginBottom: 4,
+    marginTop: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     marginLeft: 'auto',
   },
   editButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: 'blue',
     padding: 10,
     borderRadius: 5,
     marginRight: 10,
   },
   deleteButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
   },
@@ -276,32 +230,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 80,
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
+  inputContainer: {
+    padding: 16,
   },
   input: {
     height: 40,
@@ -309,25 +239,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
-    width: 250,
-    borderRadius: 5,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    marginHorizontal: 10,
-    width: 100,
-    alignItems: 'center',
-  },
-  saveButton: {
-    backgroundColor: 'green',
-  },
-  cancelButton: {
-    backgroundColor: 'gray',
   },
 });
